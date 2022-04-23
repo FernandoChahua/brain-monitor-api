@@ -22,6 +22,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - db
 
 volumes:
   local_pgdata:

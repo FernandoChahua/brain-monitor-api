@@ -1,10 +1,10 @@
 {
     "type":"postgres",
-    "username": "bduser",
-    "password": "123456789a",
-    "host": "localhost",
+    "username": "postgres",
+    "password": "123456",
+    "host": "pgdb",
     "port": "5432",
-    "database": "prueba",
+    "database": "brain_monitor",
     "entities": ["src/**/**/*.entity{.ts,.js}"],
     "migrations": ["src/database/migrations/*{.ts,.js}"],
     "cli":{

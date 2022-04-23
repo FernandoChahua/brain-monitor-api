@@ -10,40 +10,87 @@ import {
 } from 'typeorm';
 
 export enum Role {
-    ADMIN = 'A',
-    USER = 'U',
+  ADMIN = 'A',
+  DOCTOR = 'D',
 }
 
 export enum UserStatus {
-    ACTIVE = 'A',
-    INACTIVE = 'I',
+  ACTIVE = 'A',
+  INACTIVE = 'I',
 }
 
 @Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-    id: number;
+  id: number;
 
-  @Column({ name: 'email', unique: true, nullable: false })
-    email: string;
+  @Column({ name: 'username', unique: true, nullable: false })
+  username: string;
 
   @Column({ name: 'password', nullable: false })
   @Exclude({ toPlainOnly: true })
   password: string;
 
   @Column({
+    name: 'dni',
+    type: 'varchar',
+    length: 8,
+    unique: true,
+    nullable: true,
+    default: ''
+  })
+  dni: string;
+
+  @Column({
+    name: 'firstname',
+    type: 'varchar',
+    length: 50,
+    unique: false,
+    nullable: false,
+    default: ''
+  })
+  firstname: string;
+  @Column({
+    name: 'lastname',
+    type: 'varchar',
+    length: 100,
+    unique: false,
+    nullable: false,
+    default: ''
+  })
+  lastname: string;
+  @Column({
+    name: 'tuition',
+    type: 'varchar',
+    length: 100,
+    unique: false,
+    nullable: false,
+    default: ''
+  })
+  tuition: string;
+  @Column({
+    name: 'speciality',
+    type: 'varchar',
+    length: 100,
+    unique: false,
+    nullable: false,
+    default: ''
+  })
+  speciality: string;
+
+  @Column({
     type: 'enum',
     name: 'role',
     enum: Role,
-    default: Role.USER,
+    default: Role.DOCTOR,
   })
-    role: Role;
+  role: Role;
 
   @CreateDateColumn({ name: 'created_at' })
-    createdAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-    updatedAt: Date;
+  updatedAt: Date;
 
   @Column({
     type: 'enum',
@@ -51,7 +98,7 @@ export class User extends BaseEntity {
     enum: UserStatus,
     default: UserStatus.ACTIVE,
   })
-    status: UserStatus;
+  status: UserStatus;
 
   toJSON() {
     return instanceToPlain(this);

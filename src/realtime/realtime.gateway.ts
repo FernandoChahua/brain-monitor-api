@@ -60,7 +60,7 @@ export class RealtimeGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   async handleHi(socket: Socket, payload: any) {
     try {
       const user = await this.authService.getUserFromSocket(socket);
-      this.realtimeService.emitToUser(user.id, 'message', { event: 'Hi', email: user.email });
+      this.realtimeService.emitToUser(user.id, 'message', { event: 'Hi', username: user.username });
     } catch (error) {
       this.logger.error({ msg: 'handleMessageRead() failed', payload }, error);
     }

@@ -13,7 +13,7 @@ import { MailModule } from './mail/mail.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: enviroments[process.env.NODE_ENV] || '.env',
+      envFilePath: enviroments[process.env.NODE_ENV] || '.dev.env',
       load: [config],
       isGlobal: true,
       validationSchema: Joi.object({

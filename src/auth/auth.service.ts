@@ -36,14 +36,14 @@ export class AuthService {
   }
 
   async signup(signupDto: SignupDto): Promise<void> {
-    const { email } = signupDto;
+    const { username } = signupDto;
 
-    const emailExist = await this._authRepository.findOne({
-      where: [{ email, status: UserStatus.ACTIVE }],
+    const usernameExist = await this._authRepository.findOne({
+      where: [{ username, status: UserStatus.ACTIVE }],
     });
 
-    if (emailExist) {
-      this.logger.debug(`User ${emailExist.id} is found by email address ${emailExist.email}.`);
+    if (usernameExist) {
+      this.logger.debug(`User ${usernameExist.id} is found by username address ${usernameExist.username}.`);
 
       throw new HttpException('Ya existe una cuenta con ese correo.', HttpStatus.CONFLICT);
     }
@@ -53,7 +53,7 @@ export class AuthService {
 
   async signin(signinDto: SigninDto): Promise<{ token: string, refreshToken: string }> {
     const { password } = signinDto;
-    const user: User = await this.validExistUser({ email: signinDto.email });
+    const user: User = await this.validExistUser({ username: signinDto.username });
 
     const isMatch = await compare(password, user.password);
 
@@ -63,7 +63,7 @@ export class AuthService {
 
     const payload: IJwtPayload = {
       id: user.id,
-      email: user.email,
+      username: user.username,
       role: user.role as Role,
     };
 
@@ -101,7 +101,7 @@ export class AuthService {
 
     const payload: IJwtPayload = {
       id: user.id,
-      email: user.email,
+      username: user.username,
       role: user.role as Role,
     };
 
@@ -124,11 +124,11 @@ export class AuthService {
     }
   }
 
-  private async validExistUser({ email }): Promise<User> {
+  private async validExistUser({ username }): Promise<User> {
     const user = await this._authRepository.findOne({
       where: [
         {
-          email,
+          username,
           status: UserStatus.ACTIVE,
         },
       ],

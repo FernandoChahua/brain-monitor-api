@@ -6,7 +6,7 @@ export class UserDto {
       id: number;
 
     @IsNotEmpty()
-      email:string;
+      username:string;
 
     @IsNotEmpty()
       role: Role;

@@ -1,3 +1,4 @@
+import { UbigeoModule } from './ubigeo/ubigeo.module';
 import { MedicalHistoryModule } from './medical-history/medical-history.module';
 import { PatientModule } from './patient/patient.module';
 import { Inject, Module } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
+    UbigeoModule,
     MedicalHistoryModule,
     PatientModule,
     ConfigModule.forRoot({

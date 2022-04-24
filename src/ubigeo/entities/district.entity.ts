@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('distritcs')
+@Entity('districts')
 export class District extends BaseEntity {
   @PrimaryColumn('varchar', { name: 'id', length: 6, default: '000000' })
   id: string;

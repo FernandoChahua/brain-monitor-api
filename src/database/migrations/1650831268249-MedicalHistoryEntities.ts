@@ -23,7 +23,7 @@ export class MedicalHistoryEntities1650831268249 implements MigrationInterface {
         await queryRunner.query(`CREATE TYPE "public"."patients_status_enum" AS ENUM('A', 'I')`);
         await queryRunner.query(`CREATE TABLE "patients" ("id" SERIAL NOT NULL, "firstname" character varying(100) DEFAULT '', "first_lastname" character varying(100) DEFAULT '', "second_lastname" character varying(100) DEFAULT '', "registered_date" TIMESTAMP WITH TIME ZONE, "birth_date" TIMESTAMP WITH TIME ZONE, "hospital_name" character varying(200) DEFAULT '', "dni" character varying(8) DEFAULT '', "phone_number" character varying(9) DEFAULT '', "email" character varying(100) DEFAULT '', "ubigeo" character varying(6) DEFAULT '000000', "address" character varying(200) DEFAULT '', "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "status" "public"."patients_status_enum" NOT NULL DEFAULT 'A', "doctorId" integer, CONSTRAINT "PK_a7f0b9fcbb3469d5ec0b0aceaa7" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "departments" ("id" character varying(2) NOT NULL DEFAULT '00', "name" character varying(100) DEFAULT '', CONSTRAINT "PK_839517a681a86bb84cbcc6a1e9d" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "distritcs" ("id" character varying(6) NOT NULL DEFAULT '000000', "name" character varying(100) DEFAULT '', "department_id" character varying(2) DEFAULT '00', "province_id" character varying(4) DEFAULT '0000', CONSTRAINT "PK_b817cb25cd5a42fd3805756adb0" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "districts" ("id" character varying(6) NOT NULL DEFAULT '000000', "name" character varying(100) DEFAULT '', "department_id" character varying(2) DEFAULT '00', "province_id" character varying(4) DEFAULT '0000', CONSTRAINT "PK_b817cb25cd5a42fd3805756adb0" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "provinces" ("id" character varying(4) NOT NULL DEFAULT '0000', "name" character varying(100) DEFAULT '', "department_id" character varying(2) DEFAULT '00', CONSTRAINT "PK_2e4260eedbcad036ec53222e0c7" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "assignment_requests" ADD CONSTRAINT "FK_543fa3c7ba90ff6a4482c32264e" FOREIGN KEY ("medicalHistoryId") REFERENCES "medical_histories"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "magnetic_resonances" ADD CONSTRAINT "FK_352494484e712610c874cde672c" FOREIGN KEY ("medicalHistoryId") REFERENCES "medical_histories"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -39,7 +39,7 @@ export class MedicalHistoryEntities1650831268249 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "magnetic_resonances" DROP CONSTRAINT "FK_352494484e712610c874cde672c"`);
         await queryRunner.query(`ALTER TABLE "assignment_requests" DROP CONSTRAINT "FK_543fa3c7ba90ff6a4482c32264e"`);
         await queryRunner.query(`DROP TABLE "provinces"`);
-        await queryRunner.query(`DROP TABLE "distritcs"`);
+        await queryRunner.query(`DROP TABLE "districts"`);
         await queryRunner.query(`DROP TABLE "departments"`);
         await queryRunner.query(`DROP TABLE "patients"`);
         await queryRunner.query(`DROP TYPE "public"."patients_status_enum"`);

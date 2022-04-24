@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CustomLoggerService } from 'src/logger/custom-logger.service';
 import { CreatePatientDto } from './patient.dto';
 import { PatientStatus } from './patient.entity';
+import { PatientFactory } from './patient.factory';
 import { PatientRepository } from './patient.repository';
 
 @Injectable()
@@ -24,8 +25,13 @@ export class PatientService {
       return this._patientRepository.findOne({where:{dni,status: PatientStatus.ACTIVE}});
   }
 
-  async createPatient(createPatientDto: CreatePatientDto,userId: number) : Promise<void>{
+  async createPatient(createPatientDto: CreatePatientDto,userId: number) : Promise<any>{
+    const patientEntity = PatientFactory.convertCreateDtoToEntity(createPatientDto, userId);
+    await patientEntity.save();
 
+    return {
+        patientId: patientEntity.id
+    };
   }
 
 

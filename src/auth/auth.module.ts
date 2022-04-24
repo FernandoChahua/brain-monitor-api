@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -14,7 +14,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 @Module({
   imports: [
     CustomLoggerModule,
-    PatientModule,
+    forwardRef(() =>PatientModule),
     TypeOrmModule.forFeature([AuthRepository]),
     PassportModule.register({
       defaultStrategy: 'jwt',

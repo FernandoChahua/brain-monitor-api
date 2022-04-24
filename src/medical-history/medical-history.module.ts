@@ -2,7 +2,7 @@
 https://docs.nestjs.com/modules
 */
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomLoggerModule } from 'src/logger/custom-logger.module';
 import { PatientModule } from '../patient/patient.module';
@@ -14,7 +14,7 @@ import { TreatmentRepository } from './repositories/treatment.repository';
 @Module({
     imports: [
         TypeOrmModule.forFeature([AssignmentRequestRepository, MagneticResonanceRepository, MedicalHistoryRepository, TreatmentRepository]),
-        PatientModule,
+        forwardRef(() =>PatientModule),
         CustomLoggerModule
     ],
     controllers: [],

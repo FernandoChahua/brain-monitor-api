@@ -4,7 +4,7 @@ https://docs.nestjs.com/modules
 
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CustomLoggerModule } from 'src/logger/custom-logger.module';
+import { CustomLoggerModule } from '../logger/custom-logger.module';
 import { PatientModule } from '../patient/patient.module';
 import { AssignmentRequestRepository } from './repositories/assignment-request.repository';
 import { MagneticResonanceRepository } from './repositories/magnetic-resonance.repository';

@@ -1,13 +1,16 @@
 /* eslint-disable no-param-reassign */
 import {
   Body, Controller,
-  HttpCode, HttpStatus, Post,
+  Get,
+  HttpCode, HttpStatus, Post, Req, UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CustomLoggerService } from '../logger/custom-logger.service';
 import { AuthService } from './auth.service';
 import {
   SigninDto, SignupDto, RefreshTokenDto,
 } from './dto';
+import { IReqWithToken } from './req-with-token.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -45,5 +48,12 @@ export class AuthController {
       this.logger.debug(`Returning refresh token : ${JSON.stringify(refreshResponse)}`);
 
       return refreshResponse;
+    }
+
+    @Get('user-info')
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(AuthGuard())
+    async getUserTokenInfo(@Req() req: IReqWithToken){
+      return req.user;
     }
 }

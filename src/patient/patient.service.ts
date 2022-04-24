@@ -5,6 +5,7 @@ https://docs.nestjs.com/providers#services
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CustomLoggerService } from 'src/logger/custom-logger.service';
+import { CreatePatientDto } from './patient.dto';
 import { PatientStatus } from './patient.entity';
 import { PatientRepository } from './patient.repository';
 
@@ -23,8 +24,8 @@ export class PatientService {
       return this._patientRepository.findOne({where:{dni,status: PatientStatus.ACTIVE}});
   }
 
-  async createPatient(userId: number) : Promise<void>{
-    
+  async createPatient(createPatientDto: CreatePatientDto,userId: number) : Promise<void>{
+
   }
 
 

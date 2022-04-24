@@ -1,3 +1,5 @@
+import { MedicalHistoryModule } from './medical-history/medical-history.module';
+import { PatientModule } from './patient/patient.module';
 import { Inject, Module } from '@nestjs/common';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import * as Joi from 'joi';
@@ -12,6 +14,8 @@ import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
+    MedicalHistoryModule,
+    PatientModule,
     ConfigModule.forRoot({
       envFilePath: enviroments[process.env.NODE_ENV] || '.dev.env',
       load: [config],
@@ -23,14 +27,20 @@ import { MailModule } from './mail/mail.module';
         // DATABASE_PORT: Joi.number().required(),
       }),
     }),
-    DatabaseModule, MailModule, CustomLoggerModule, AuthModule],
+    DatabaseModule,
+    MailModule,
+    CustomLoggerModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
   static port: number | string;
 
-  constructor(@Inject(config.KEY) private configService: ConfigType<typeof config>) {
+  constructor(
+    @Inject(config.KEY) private configService: ConfigType<typeof config>,
+  ) {
     AppModule.port = parseInt(this.configService.port);
     console.log(AppModule.port);
     console.log(process.env.NODE_ENV);

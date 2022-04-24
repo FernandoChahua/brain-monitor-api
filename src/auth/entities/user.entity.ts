@@ -1,10 +1,12 @@
 /* eslint-disable import/no-cycle */
 import { Exclude, instanceToPlain } from 'class-transformer';
+import { Patient } from '../../patient/patient.entity';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -37,7 +39,7 @@ export class User extends BaseEntity {
     length: 8,
     unique: true,
     nullable: true,
-    default: ''
+    default: '',
   })
   dni: string;
 
@@ -47,7 +49,7 @@ export class User extends BaseEntity {
     length: 50,
     unique: false,
     nullable: false,
-    default: ''
+    default: '',
   })
   firstname: string;
   @Column({
@@ -56,7 +58,7 @@ export class User extends BaseEntity {
     length: 100,
     unique: false,
     nullable: false,
-    default: ''
+    default: '',
   })
   lastname: string;
   @Column({
@@ -65,7 +67,7 @@ export class User extends BaseEntity {
     length: 100,
     unique: false,
     nullable: false,
-    default: ''
+    default: '',
   })
   tuition: string;
   @Column({
@@ -74,7 +76,7 @@ export class User extends BaseEntity {
     length: 100,
     unique: false,
     nullable: false,
-    default: ''
+    default: '',
   })
   speciality: string;
 
@@ -85,6 +87,9 @@ export class User extends BaseEntity {
     default: Role.DOCTOR,
   })
   role: Role;
+
+  @OneToMany(() => Patient, (patient: Patient) => patient.doctor)
+  patients: Patient[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

@@ -11,6 +11,8 @@ import { AssignmentRequestRepository } from './repositories/assignment-request.r
 import { MagneticResonanceRepository } from './repositories/magnetic-resonance.repository';
 import { MedicalHistoryRepository } from './repositories/medical-history.repository';
 import { TreatmentRepository } from './repositories/treatment.repository';
+import { CreateMedicalHistoryDto } from './medical-history.dto';
+import { MedicalHistoryFactory } from './medical-history.factory';
 
 @Injectable()
 export class MedicalHistoryService {
@@ -28,5 +30,15 @@ export class MedicalHistoryService {
     this.logger = new CustomLoggerService(MedicalHistoryService.name);
   }
 
+
+  async createMedicalHistory(createMedicalHistory: CreateMedicalHistoryDto){
+    const medicalHistoryEntity = MedicalHistoryFactory.convertCreateDtoToEntity(createMedicalHistory);
+
+    await medicalHistoryEntity.save();
+
+    return {
+      medicalHistoryId: medicalHistoryEntity.id
+    };
+  }
   
 }

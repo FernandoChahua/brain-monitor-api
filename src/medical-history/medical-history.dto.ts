@@ -22,7 +22,7 @@ export class CreateMedicalHistoryDto {
     
       haveAllergies: boolean;
     
-      existingDiseases;
+      existingDiseases: string;
     
       responsibleName: string;
     
@@ -31,4 +31,6 @@ export class CreateMedicalHistoryDto {
       responsiblePhoneNumber: string;
     
       responsibleDni: string;
+
+      patientId: number;
 }

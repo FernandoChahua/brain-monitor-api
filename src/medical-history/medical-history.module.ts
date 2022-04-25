@@ -1,3 +1,4 @@
+import { MedicalHistoryController } from './medical-history.controller';
 import { MedicalHistoryService } from './medical-history.service';
 /*
 https://docs.nestjs.com/modules
@@ -23,7 +24,7 @@ import { AuthModule } from 'src/auth/auth.module';
     forwardRef(() => AuthModule),
     CustomLoggerModule,
   ],
-  controllers: [],
+  controllers: [MedicalHistoryController],
   providers: [MedicalHistoryService],
 })
 export class MedicalHistoryModule {}

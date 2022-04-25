@@ -12,6 +12,7 @@ import { enviroments } from './config-env/enviroments';
 import { DatabaseModule } from './database/database.module';
 import { CustomLoggerModule } from './logger/custom-logger.module';
 import { MailModule } from './mail/mail.module';
+import { ImageModule } from './image-module/image-module.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { MailModule } from './mail/mail.module';
     MailModule,
     CustomLoggerModule,
     AuthModule,
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -44,7 +46,5 @@ export class AppModule {
     @Inject(config.KEY) private configService: ConfigType<typeof config>,
   ) {
     AppModule.port = parseInt(this.configService.port);
-    console.log(AppModule.port);
-    console.log(`TZ: ${process.env.TZ}`);
   }
 }

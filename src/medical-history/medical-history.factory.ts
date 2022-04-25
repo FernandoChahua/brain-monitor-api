@@ -1,8 +1,24 @@
 import { Patient } from "src/patient/patient.entity";
+import { DateUtil } from "src/utils/date-util";
+import { MagneticResonance } from "./entities/magnetic-resonance.entity";
 import { MedicalHistory } from "./entities/medical-history.entity";
-import { CreateMedicalHistoryDto } from "./medical-history.dto";
+import { CreateMedicalHistoryDto, GetMagneticResonanceDto, GetMedicalHistoryDto } from "./medical-history.dto";
 
 export class MedicalHistoryFactory {
+    
+    public static convertEntityToGetMedicalHistoryDto(medicalHistory: MedicalHistory){
+        const getMedicalHistoryDto = new GetMedicalHistoryDto();
+        getMedicalHistoryDto.medicalHistoryId = medicalHistory.id;
+        getMedicalHistoryDto.patientDni = medicalHistory.patient.dni;
+        getMedicalHistoryDto.doctorId = medicalHistory.patient.doctor.id;
+        getMedicalHistoryDto.patientName = `${medicalHistory.patient.firstname} ${medicalHistory.patient.firstLastname} ${medicalHistory.patient.secondLastname}`;
+        getMedicalHistoryDto.priorization = medicalHistory.priorizationType;
+        getMedicalHistoryDto.registeredDate = DateUtil.getDateWithTimezone(medicalHistory.createdAt);
+        getMedicalHistoryDto.patientAge = DateUtil.getAgeFromDate(medicalHistory.patient.birthDate);
+
+        return getMedicalHistoryDto;
+    }
+
     public static convertCreateDtoToEntity(createMedicalHistoryDto: CreateMedicalHistoryDto): MedicalHistory{
         const medicalHistory = new MedicalHistory();
         medicalHistory.birthPlace = createMedicalHistoryDto.birthPlace;
@@ -25,5 +41,18 @@ export class MedicalHistoryFactory {
         medicalHistory.patient = patient;
 
         return medicalHistory;
+    }
+
+    public static convertEntityToGetMagneticResonanceDto(magneticResonance: MagneticResonance): GetMagneticResonanceDto{
+        const getMagneticResonanceDto = new GetMagneticResonanceDto();
+        getMagneticResonanceDto.createdAt = DateUtil.getDateWithTimezone(magneticResonance.createdAt);
+        getMagneticResonanceDto.filename = magneticResonance.filename;
+        getMagneticResonanceDto.medicalHistoryId = magneticResonance.medicalHistory.id;
+        getMagneticResonanceDto.resonanceAreaName = magneticResonance.resonanceAreaName;
+        getMagneticResonanceDto.resonanceImageLink=  magneticResonance.resonanceImageLink;
+        getMagneticResonanceDto.status = magneticResonance.status;
+        getMagneticResonanceDto.id = magneticResonance.id;
+
+        return getMagneticResonanceDto;
     }
 }

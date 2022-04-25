@@ -9,7 +9,6 @@ export const databaseProviders = [
     imports: [],
     inject: [config.KEY],
     async useFactory(configService: ConfigType<typeof config>) {
-      console.log(process.cwd());
       let hasSsl : any= { rejectUnauthorized: false };
       let configAdd : any= {url: configService.database.urlLink };
       if(process.env.NODE_ENV === 'dev'){
@@ -21,8 +20,6 @@ export const databaseProviders = [
           database: configService.database.name
         };
       }
-
-      console.log(configAdd,hasSsl);
       return {
         ssl: hasSsl,
         type: 'postgres',

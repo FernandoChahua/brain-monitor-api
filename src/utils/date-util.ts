@@ -15,4 +15,15 @@ export class DateUtil {
     const utc = date.getTime() - (date.getTimezoneOffset() * 60000);
     return new Date(utc);
   }
+
+  public static getAgeFromDate(birthDate: Date, fromDate?: Date): number{
+    if(!fromDate) fromDate = this.getNowServerDate();
+    birthDate = this.getDateWithTimezone(birthDate);
+    let age = fromDate.getFullYear() - birthDate.getFullYear();
+    let m = fromDate.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && fromDate.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+  }
 }

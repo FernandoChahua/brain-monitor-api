@@ -47,7 +47,6 @@ export enum AssignmentRequestStatus {
     HIGH = 'H',
     NOT_ASSIGNED = 'N',
   }
-  
   export enum AssignmentStatus {
     ACTIVE = 'A',
     INACTIVE = 'I',

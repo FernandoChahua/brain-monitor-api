@@ -45,6 +45,6 @@ export class AppModule {
   ) {
     AppModule.port = parseInt(this.configService.port);
     console.log(AppModule.port);
-    console.log(process.env.NODE_ENV);
+    console.log(`TZ: ${process.env.TZ}`);
   }
 }

@@ -1,6 +1,6 @@
 import { Department } from "./entities/department.entity";
 import { District } from "./entities/district.entity";
-import { Province } from "./entities/provice.entity";
+import { Province } from "./province.entity";
 import { DepartmentDto, DistrictDto, ProvinceDto } from "./ubigeo.dto";
 
 export class UbigeoFactory {

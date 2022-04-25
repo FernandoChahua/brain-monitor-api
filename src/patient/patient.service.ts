@@ -4,7 +4,7 @@ https://docs.nestjs.com/providers#services
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CustomLoggerService } from 'src/logger/custom-logger.service';
+import { CustomLoggerService } from '../logger/custom-logger.service';
 import { CreatePatientDto } from './patient.dto';
 import { PatientStatus } from './patient.entity';
 import { PatientFactory } from './patient.factory';
@@ -34,5 +34,8 @@ export class PatientService {
     };
   }
 
+  async findPatientById(id: number){
+      return this._patientRepository.findOne({where: { id }});
+  }
 
 }

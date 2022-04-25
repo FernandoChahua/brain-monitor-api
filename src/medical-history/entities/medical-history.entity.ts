@@ -45,7 +45,7 @@ export class MedicalHistory extends BaseEntity {
     enum: BloodType,
     default: BloodType.UNKNOW,
   })
-  bloodType: HealthInsurance;
+  bloodType: BloodType;
 
   @Column({
     name: 'has_relative_with_cancer',

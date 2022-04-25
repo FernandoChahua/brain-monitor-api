@@ -3,7 +3,6 @@ import { ConfigType } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PatientModule } from '../patient/patient.module';
 import config from '../config-env/config';
 import { CustomLoggerModule } from '../logger/custom-logger.module';
 import { AuthController } from './auth.controller';
@@ -14,7 +13,6 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 @Module({
   imports: [
     CustomLoggerModule,
-    forwardRef(() =>PatientModule),
     TypeOrmModule.forFeature([AuthRepository]),
     PassportModule.register({
       defaultStrategy: 'jwt',

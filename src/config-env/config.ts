@@ -8,7 +8,7 @@ export default registerAs('config', () => {
       host: process.env.DATABASE_HOST,
       user: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
-      urlLink: process.env.DATABASE_URL_LINK,
+      urlLink: process.env.DATABASE_URL,
     },
     apiKey: process.env.API_KEY,
     port: process.env.PORT,

@@ -16,8 +16,8 @@ import { MailModule } from './mail/mail.module';
 @Module({
   imports: [
     UbigeoModule,
-    MedicalHistoryModule,
     PatientModule,
+    MedicalHistoryModule,
     ConfigModule.forRoot({
       envFilePath: enviroments[process.env.NODE_ENV] || '.dev.env',
       load: [config],

@@ -24,7 +24,11 @@
     "migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert --config ./orm.config.json",
     "prod:migration:generate": "ts-node node_modules/typeorm/cli.js migration:generate --config ./orm.config.prod.json --name",
     "prod:migration:run": "ts-node node_modules/typeorm/cli.js migration:run --config ./orm.config.prod.json",
-    "prod:migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert --config ./orm.config.prod.json"
+    "prod:migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert --config ./orm.config.prod.json",
+
+    "heroku:migration:generate": "ts-node node_modules/typeorm/cli.js migration:generate --config ./orm.config.heroku.json --name",
+    "heroku:migration:run": "ts-node node_modules/typeorm/cli.js migration:run --config ./orm.config.heroku.json",
+    "heroku:migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert --config ./orm.config.heroku.json"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.1",

@@ -3,7 +3,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './exception/http-exception.filter';
 
-var http = require('http');
+const http = require('http');
+const https = require('https');
 
 async function bootstrap() {
   const logLevels: LogLevel[] =
@@ -44,7 +45,8 @@ async function bootstrap() {
   });
 
   setInterval(function () {
-    http.get(process.env.BASE_URL);
+    if(process.env.NODE_ENV === 'prod') https.get(process.env.BASE_URL);
+    else http.get(process.env.BASE_URL);
     console.log(`heroku wake up!!`);
   }, 300000); // every 5 minutes (300000)
 

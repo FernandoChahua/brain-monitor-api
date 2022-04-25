@@ -46,5 +46,6 @@ export class AppModule {
     @Inject(config.KEY) private configService: ConfigType<typeof config>,
   ) {
     AppModule.port = parseInt(this.configService.port);
+    console.log(process.cwd());
   }
 }

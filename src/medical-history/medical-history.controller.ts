@@ -25,6 +25,7 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { IReqWithToken } from 'src/auth/req-with-token.interface';
 import {
   AddDiagnosisDescription,
+  AddTreatmentDto,
   CreateMedicalHistoryDto,
 } from './medical-history.dto';
 import { MedicalHistoryService } from './medical-history.service';
@@ -161,6 +162,44 @@ export class MedicalHistoryController {
     return this.medicalHistoryService.addDiagnosisDescription(
       medicalHistoryId,
       diagnosisDescriptionDto,
+    );
+  }
+
+  @Get('/treatment/:medicalHistoryId')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async getTreatmentByMedicalHistoryId(
+    @Req() req: IReqWithToken,
+    @Param('medicalHistoryId', new ParseIntPipe()) medicalHistoryId: number,
+    @Query('limit') limit: number = 10,
+    @Query('page') page: number = 1,
+  ) {
+    if (limit < 1) limit = 1;
+    if (limit > 50) limit = 50;
+
+    if (page < 1) page = 1;
+    const options = new PaginationOptionsInterface();
+    options.limit = limit;
+    options.page = page;
+    options.query = '';
+
+    return this.medicalHistoryService.getTreatmentsByMedicalHistory(
+      medicalHistoryId,
+      options,
+    );
+  }
+
+  @Post('/treatment/:medicalHistoryId')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async addTreatmentToMedicalHistory(
+    @Req() req: IReqWithToken,
+    @Param('medicalHistoryId', new ParseIntPipe()) medicalHistoryId: number,
+    @Body() addTreatmentDto: AddTreatmentDto,
+  ) {
+    return this.medicalHistoryService.addTreatment(
+      medicalHistoryId,
+      addTreatmentDto,
     );
   }
 }

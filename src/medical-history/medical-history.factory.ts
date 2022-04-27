@@ -2,7 +2,8 @@ import { Patient } from "src/patient/patient.entity";
 import { DateUtil } from "src/utils/date-util";
 import { MagneticResonance } from "./entities/magnetic-resonance.entity";
 import { MedicalHistory } from "./entities/medical-history.entity";
-import { CreateMedicalHistoryDto, GetMagneticResonanceDto, GetMedicalHistoryDto } from "./medical-history.dto";
+import { Treatment } from "./entities/treatment.entity";
+import { CreateMedicalHistoryDto, GetMagneticResonanceDto, GetMedicalHistoryDto, GetTreatmentDto } from "./medical-history.dto";
 
 export class MedicalHistoryFactory {
     
@@ -54,5 +55,15 @@ export class MedicalHistoryFactory {
         getMagneticResonanceDto.id = magneticResonance.id;
 
         return getMagneticResonanceDto;
+    }
+
+    public static convertEntityToGetTreatmentDto(treatment: Treatment): GetTreatmentDto {
+        const getTreatmentDto = new GetTreatmentDto();
+        getTreatmentDto.createdAt = DateUtil.getDateWithTimezone(treatment.createdAt);
+        getTreatmentDto.observation = treatment.observation;
+        getTreatmentDto.status = treatment.status;
+        getTreatmentDto.treatmentName = treatment.treatmentName;
+
+        return getTreatmentDto;
     }
 }

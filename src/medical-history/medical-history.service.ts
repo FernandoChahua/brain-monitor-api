@@ -11,14 +11,15 @@ import { AssignmentRequestRepository } from './repositories/assignment-request.r
 import { MagneticResonanceRepository } from './repositories/magnetic-resonance.repository';
 import { MedicalHistoryRepository } from './repositories/medical-history.repository';
 import { TreatmentRepository } from './repositories/treatment.repository';
-import { AddDiagnosisDescription, CreateMedicalHistoryDto } from './medical-history.dto';
+import { AddDiagnosisDescription, AddTreatmentDto, CreateMedicalHistoryDto, GetMedicalHistoryDto, GetTreatmentDto } from './medical-history.dto';
 import { MedicalHistoryFactory } from './medical-history.factory';
 import { MagneticResonance } from './entities/magnetic-resonance.entity';
 import { MedicalHistory } from './entities/medical-history.entity';
 import { ImageHandler } from 'src/utils/image-handler';
-import { MagneticResonanceStatus, MecialHistoryStatus } from './entities/enums';
+import { MagneticResonanceStatus, MecialHistoryStatus, TreatmentStatus } from './entities/enums';
 import { PaginationOptionsInterface } from 'src/utils/pagination/pagination.options.interface';
 import { PaginationFactory } from 'src/utils/pagination/pagination.factory';
+import { Treatment } from './entities/treatment.entity';
 
 interface MagneticResonanceInput {
   resonanceAreaName: string;
@@ -41,6 +42,8 @@ export class MedicalHistoryService {
   ) {
     this.logger = new CustomLoggerService(MedicalHistoryService.name);
   }
+
+  // Medical Histories functions
 
   async createMedicalHistory(createMedicalHistory: CreateMedicalHistoryDto) {
     const medicalHistoryEntity =
@@ -76,7 +79,7 @@ export class MedicalHistoryService {
       return MedicalHistoryFactory.convertEntityToGetMedicalHistoryDto(medicalHistory);
     }));
 
-    const response = PaginationFactory.buildPaginationResult<any>(
+    const response = PaginationFactory.buildPaginationResult<GetMedicalHistoryDto>(
       results,
       options.limit,
       options.page,
@@ -85,7 +88,8 @@ export class MedicalHistoryService {
     return response;
   }
 
-
+ // Magnetic Resonance functions
+  
   async addMagneticResonance({
     resonanceAreaName,
     medicalHistoryId,
@@ -133,6 +137,8 @@ export class MedicalHistoryService {
     await magneticResonance.save();
   }
 
+  // Diagnosis Functions
+
   async getMedicalHistoryDiagnosis(medicalHistoryId: number){
     // TODO: valid exist medical history 
     // TODO: Call AWS and get percentage diagnosis
@@ -153,5 +159,48 @@ export class MedicalHistoryService {
     medicalHistory.diagnosisDescription = addDiagnosisDescription.diagnosisDescription;
     medicalHistory.treatmentDescription = addDiagnosisDescription.treatmentDescription;
     await medicalHistory.save();
+  }
+
+  // Treatment functions
+
+  async addTreatment(medicalHistoryId: number, addTreatmentDto: AddTreatmentDto){
+    // TODO: ADD VALIDATION EXIST MEDICAL HISTORY
+
+    const treatment = new Treatment();
+    treatment.medicalHistory = new MedicalHistory();
+    treatment.medicalHistory.id = medicalHistoryId;
+    treatment.treatmentName = addTreatmentDto.treatmentName;
+    treatment.observation = addTreatmentDto.observation;
+    await treatment.save();
+  }
+
+  async getTreatmentsByMedicalHistory(medicalHistoryId: number, options: PaginationOptionsInterface){
+    options.limit = options.limit ? options.limit : 10;
+    options.page = options.page > 0 ? options.page : 1;
+    options.query = options.query ? options.query : '';
+    const [data, total] = await this._treatmentRepo.findAndCount({
+      take: options.limit,
+      skip: options.limit * (options.page - 1),
+      where:
+        {
+          status: TreatmentStatus.ACTIVE,
+          medicalHistory: { id: medicalHistoryId }
+        },
+      order: { createdAt: 'DESC' },
+      relations: ['medicalHistory'],
+    });
+
+    const results = await Promise.all(data.map(async (treatment) => {
+
+      return MedicalHistoryFactory.convertEntityToGetTreatmentDto(treatment);
+    }));
+
+    const response = PaginationFactory.buildPaginationResult<GetTreatmentDto>(
+      results,
+      options.limit,
+      options.page,
+      total,
+    );
+    return response;
   }
 }

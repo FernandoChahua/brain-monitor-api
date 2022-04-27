@@ -1,4 +1,4 @@
-import { BloodType, HealthInsurance, MagneticResonanceStatus, PriorizationType, Relationship } from './entities/enums';
+import { BloodType, HealthInsurance, MagneticResonanceStatus, PriorizationType, Relationship, TreatmentName, TreatmentStatus } from './entities/enums';
 
 export class GetMedicalHistoryDto{
       patientName: string;
@@ -58,4 +58,16 @@ export class GetMagneticResonanceDto {
 export class AddDiagnosisDescription {
       diagnosisDescription: string;
       treatmentDescription: string;
+}
+
+export class AddTreatmentDto {
+  treatmentName: TreatmentName;
+  observation : string;
+}
+
+export class GetTreatmentDto {
+  treatmentName: TreatmentName;
+  createdAt: Date;
+  observation: string;
+  status: TreatmentStatus;
 }

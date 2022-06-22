@@ -12,6 +12,7 @@ import { MagneticResonanceRepository } from './repositories/magnetic-resonance.r
 import { MedicalHistoryRepository } from './repositories/medical-history.repository';
 import { TreatmentRepository } from './repositories/treatment.repository';
 import { AuthModule } from 'src/auth/auth.module';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthModule } from 'src/auth/auth.module';
     ]),
     forwardRef(() => AuthModule),
     CustomLoggerModule,
+    CloudinaryModule,
   ],
   controllers: [MedicalHistoryController],
   providers: [MedicalHistoryService],

@@ -25,7 +25,6 @@
     "prod:migration:generate": "ts-node node_modules/typeorm/cli.js migration:generate --config ./orm.config.prod.json --name",
     "prod:migration:run": "ts-node node_modules/typeorm/cli.js migration:run --config ./orm.config.prod.json",
     "prod:migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert --config ./orm.config.prod.json",
-
     "heroku:migration:generate": "ts-node node_modules/typeorm/cli.js migration:generate --config ./orm.config.heroku.json --name",
     "heroku:migration:run": "ts-node node_modules/typeorm/cli.js migration:run --config ./orm.config.heroku.json",
     "heroku:migration:revert": "ts-node node_modules/typeorm/cli.js migration:revert --config ./orm.config.heroku.json"
@@ -43,8 +42,10 @@
     "@nestjs/websockets": "^8.2.4",
     "@types/nodemailer": "^6.4.4",
     "bcryptjs": "^2.4.3",
+    "buffer-to-stream": "^1.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "cloudinary": "^1.29.1",
     "handlebars": "^4.7.7",
     "joi": "^17.6.0",
     "nodemailer": "^6.7.2",

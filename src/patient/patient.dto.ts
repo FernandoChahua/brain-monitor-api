@@ -1,3 +1,6 @@
+import { Gender } from "./patient.entity";
+
+
 export class CreatePatientDto {
       firstname: string;
       
@@ -20,5 +23,7 @@ export class CreatePatientDto {
       ubigeo: string;
     
       address: string;
+
+      gender: Gender;
   }
   

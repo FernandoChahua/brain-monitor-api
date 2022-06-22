@@ -14,6 +14,7 @@ import { AssignmentRequest } from './assignment-request.entity';
 import { MagneticResonance } from './magnetic-resonance.entity';
 import { Treatment } from './treatment.entity';
 import { AssignmentStatus, BloodType, HealthInsurance, MecialHistoryStatus, PriorizationType, Relationship } from './enums';
+import { Transform } from 'class-transformer';
 
 
 
@@ -175,11 +176,11 @@ export class MedicalHistory extends BaseEntity {
 
   @Column({
     type: 'enum',
-    name: 'priorization_type',
+    name: 'prioritization_type',
     enum: PriorizationType,
     default: PriorizationType.NOT_ASSIGNED,
   })
-  priorizationType: PriorizationType;
+  prioritizationType: PriorizationType;
 
   @Column({
     type: 'enum',

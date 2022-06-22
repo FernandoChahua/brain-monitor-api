@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { AssignmentRequestStatus, AssignmentStatus, PriorizationType } from "./enums";
 import {MedicalHistory} from "./medical-history.entity";
 
@@ -12,11 +12,11 @@ export class AssignmentRequest extends BaseEntity {
 
   @Column({
     type: 'enum',
-    name: 'priorization_type',
+    name: 'prioritization_type',
     enum: PriorizationType,
     default: PriorizationType.NOT_ASSIGNED,
   })
-  priorizationType: PriorizationType;
+  prioritizationType: PriorizationType;
 
   @Column({
     type: 'enum',

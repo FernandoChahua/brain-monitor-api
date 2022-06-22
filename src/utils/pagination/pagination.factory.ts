@@ -8,7 +8,7 @@ export class PaginationFactory {
     paginationResult.total = total;
     paginationResult.results = result;
 
-    paginationResult.total_pages = Math.ceil(total / limit);
+    paginationResult.totalPages = Math.ceil(total / limit);
 
     return paginationResult;
   }

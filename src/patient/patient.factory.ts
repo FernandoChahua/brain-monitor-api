@@ -16,6 +16,7 @@ export class PatientFactory {
         patient.registeredDate = createPatientDto.registeredDate;
         patient.ubigeo = createPatientDto.ubigeo;
         patient.secondLastname = createPatientDto.secondLastname;
+        patient.gender = createPatientDto.gender;
         
         
         const doctor = new User();

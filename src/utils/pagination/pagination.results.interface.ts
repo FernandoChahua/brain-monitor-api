@@ -3,7 +3,7 @@ export class PaginationResultInterface<PaginationEntity> {
 
   total: number;
 
-  total_pages: number;
+  totalPages: number;
 
   page: number;
 

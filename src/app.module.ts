@@ -1,3 +1,4 @@
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { UbigeoModule } from './ubigeo/ubigeo.module';
 import { MedicalHistoryModule } from './medical-history/medical-history.module';
 import { PatientModule } from './patient/patient.module';
@@ -16,6 +17,7 @@ import { ImageModule } from './image-module/image-module.module';
 
 @Module({
   imports: [
+    CloudinaryModule,
     UbigeoModule,
     PatientModule,
     MedicalHistoryModule,

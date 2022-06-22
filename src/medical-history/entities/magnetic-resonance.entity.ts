@@ -44,6 +44,33 @@ export class MagneticResonance extends BaseEntity {
   })
   filename: string;
 
+  @Column({
+    name: 'cloudinary_public_id',
+    type: 'varchar',
+    length: 300,
+    nullable: true,
+    default: '',
+  })
+  cloudinary_public_id: string;
+
+  @Column({
+    name: 'cloudinary_version_id',
+    type: 'varchar',
+    length: 300,
+    nullable: true,
+    default: '',
+  })
+  cloudinary_version_id: string;
+
+  @Column({
+    name: 'cloudinary_folder',
+    type: 'varchar',
+    length: 300,
+    nullable: true,
+    default: '',
+  })
+  cloudinary_folder: string;
+
   @ManyToOne(() => MedicalHistory, (medicalHistory: MedicalHistory) => medicalHistory.magneticResonances, { primary: false } )
    medicalHistory: MedicalHistory;
 

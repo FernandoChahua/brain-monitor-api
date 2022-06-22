@@ -5,7 +5,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -15,6 +14,12 @@ import {
 export enum PatientStatus {
   ACTIVE = 'A',
   INACTIVE = 'I',
+}
+
+export enum Gender {
+  MALE = 'M',
+  FEMALE = 'F',
+  NONE = 'N',
 }
 
 @Entity('patients')
@@ -116,6 +121,14 @@ export class Patient extends BaseEntity {
     default: '',
   })
   address: string;
+
+  @Column({
+    type: 'enum',
+    name: 'gender',
+    enum: Gender,
+    default: Gender.NONE,
+  })
+  gender: Gender;
 
   @ManyToOne(() => User, (user: User) => user.patients, { primary: false })
   doctor: User;

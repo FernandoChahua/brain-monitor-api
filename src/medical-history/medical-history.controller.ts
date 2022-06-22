@@ -13,17 +13,18 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   Req,
   UploadedFile,
-  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { IReqWithToken } from 'src/auth/req-with-token.interface';
 import {
+  AddAssignmentRequestDto,
   AddDiagnosisDescription,
   AddTreatmentDto,
   CreateMedicalHistoryDto,
@@ -32,11 +33,46 @@ import { MedicalHistoryService } from './medical-history.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { PaginationOptionsInterface } from 'src/utils/pagination/pagination.options.interface';
+import { PaginationOptionsInterface } from '../utils/pagination/pagination.options.interface';
+import { AssignmentRequestStatus, AssignmentStatus, PriorizationType, TreatmentName } from './entities/enums';
+import { Gender } from 'src/patient/patient.entity';
+
+interface DiagnosisMock{
+  percentage: number;
+}
 
 @Controller('medical-history')
 export class MedicalHistoryController {
   constructor(private readonly medicalHistoryService: MedicalHistoryService) {}
+
+  @Get('dashboard')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async getDashboardMetadata(
+    @Req() req: IReqWithToken,
+    @Query('doctorId', new ParseIntPipe()) doctorId: number,
+    @Query('intervention') intervention?: TreatmentName,
+    @Query('gender') gender?: Gender,
+    @Query('assignmentStatus')assignmentStatus?: AssignmentStatus,
+    @Query('prioritization') prioritization?:PriorizationType
+  ) {
+    
+    return this.medicalHistoryService.getDashboardMetadata(doctorId, intervention, gender, assignmentStatus, prioritization);
+  }
+
+  @Get('dashboard-admin')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async getDashboardAdminMetadata(
+    @Req() req: IReqWithToken,
+    @Query('intervention') intervention?: TreatmentName,
+    @Query('gender') gender?: Gender,
+    @Query('assignmentStatus')assignmentStatus?: AssignmentStatus,
+    @Query('prioritization') prioritization?:PriorizationType
+  ) {
+    return this.medicalHistoryService.getDashboardAdminMetadata(intervention, gender, assignmentStatus, prioritization);
+  }
+
   @Post('')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
@@ -49,7 +85,7 @@ export class MedicalHistoryController {
     );
   }
 
-  @Get('/:doctorId')
+  @Get('doctor/:doctorId')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
   async getMedicalHistoriesByDoctorId(
@@ -146,7 +182,7 @@ export class MedicalHistoryController {
     @Req() req: IReqWithToken,
     @Param('medicalHistoryId', new ParseIntPipe()) medicalHistoryId: number,
   ) {
-    return this.medicalHistoryService.getMedicalHistoryDiagnosis(
+    return this.medicalHistoryService.getDiagnosisDescription(
       medicalHistoryId,
     );
   }
@@ -162,6 +198,22 @@ export class MedicalHistoryController {
     return this.medicalHistoryService.addDiagnosisDescription(
       medicalHistoryId,
       diagnosisDescriptionDto,
+    );
+  }
+
+  @Put('/diagnosis-mock/:medicalHistoryId')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async addMockPercentageToMedicalHistory(
+    @Req() req: IReqWithToken,
+    @Param('medicalHistoryId', new ParseIntPipe()) medicalHistoryId: number,
+    @Body() diagnosisMock: DiagnosisMock,
+  ) {
+    console.log(diagnosisMock);
+    console.log(typeof diagnosisMock.percentage);
+    return this.medicalHistoryService.addMockPercentageToMedicalHistory(
+      medicalHistoryId,
+      diagnosisMock.percentage,
     );
   }
 
@@ -202,4 +254,82 @@ export class MedicalHistoryController {
       addTreatmentDto,
     );
   }
+
+  @Post('/assignment-request/:medicalHistoryId')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async addAssignmentRequest(
+    @Req() req: IReqWithToken,
+    @Param('medicalHistoryId', new ParseIntPipe()) medicalHistoryId: number,
+    @Body() addAssignmentRequestDto: AddAssignmentRequestDto,
+  ) {
+    return this.medicalHistoryService.addAssignRequest(
+      medicalHistoryId,
+      addAssignmentRequestDto,
+    );
+  }
+
+  @Get('/assignment-request-admin')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async getAdminAssigmentRequests(
+    @Req() req: IReqWithToken,
+    @Query('limit') limit: number = 10,
+    @Query('page') page: number = 1,
+  ) {
+    if (limit < 1) limit = 1;
+    if (limit > 50) limit = 50;
+
+    if (page < 1) page = 1;
+    const options = new PaginationOptionsInterface();
+    options.limit = limit;
+    options.page = page;
+    options.query = '';
+    console.log('safsdfafda');
+
+    return this.medicalHistoryService.getAdminAssignmentRequests(
+      options,
+    );
+  }
+
+  @Get('/assignment-request/:medicalHistoryId')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async getAssigmentRequests(
+    @Req() req: IReqWithToken,
+    @Param('medicalHistoryId', new ParseIntPipe()) medicalHistoryId: number,
+    @Query('limit') limit: number = 10,
+    @Query('page') page: number = 1,
+  ) {
+    if (limit < 1) limit = 1;
+    if (limit > 50) limit = 50;
+
+    if (page < 1) page = 1;
+    const options = new PaginationOptionsInterface();
+    options.limit = limit;
+    options.page = page;
+    options.query = '';
+
+    return this.medicalHistoryService.getAssignmentRequests(
+      medicalHistoryId,
+      options,
+    );
+  }
+
+  @Put('/assignment-request/:assigmentRequestId')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async changeAssigmentRequestStatus(
+    @Req() req: IReqWithToken,
+    @Param('assigmentRequestId', new ParseIntPipe()) assigmentRequestId: number,
+    @Body('assigmentRequestStatus') assigmentRequestStatus: AssignmentRequestStatus,
+  ) {
+    return this.medicalHistoryService.changeAssignmentRequestStatus(
+      assigmentRequestId,
+      assigmentRequestStatus,
+    );
+  }
+
+  
+
 }
